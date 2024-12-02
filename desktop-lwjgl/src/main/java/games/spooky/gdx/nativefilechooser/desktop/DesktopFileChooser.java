@@ -59,7 +59,7 @@ public class DesktopFileChooser implements NativeFileChooser {
         if (configuration.mimeFilter != null) {
             try {
                 mimeFilterList = createFilterList(configuration.mimeFilter);
-                System.out.println(mimeFilterList);
+                //System.out.println(mimeFilterList);
             } catch (MimeTypeException ignored) {
             }
         }
@@ -73,14 +73,16 @@ public class DesktopFileChooser implements NativeFileChooser {
                 mimeFilterList += configuration.fileTypeFilter;
             }
 
-            String[] filter = mimeFilterList.split(";");
-            filterList = NFDFilterItem.malloc(filter.length);
-            for (int i = 0; i < filter.length; i++) {
+            if (!mimeFilterList.isEmpty()) {
+                String[] filter = mimeFilterList.split(";");
+                filterList = NFDFilterItem.malloc(filter.length);
+                for (int i = 0; i < filter.length; i++) {
 
-                String[] s = filter[i].split("/");
-                filterList.get(i)
-                        .name(stack.UTF8(s[0]))
-                        .spec(stack.UTF8(s[1]));
+                    String[] s = filter[i].split("/");
+                    filterList.get(i)
+                            .name(stack.UTF8(s[0]))
+                            .spec(stack.UTF8(s[1]));
+                }
             }
 
             int result = 0;
